@@ -1,0 +1,75 @@
+import os
+import scipy
+import numpy as np
+import torchvision
+
+dataset_root="./cifar_10/"
+cifar10_data = torchvision.datasets.CIFAR10(root=f"{dataset_root}", download=True)
+classes_uq = list(np.unique(cifar10_data.targets))
+num_classes = len(classes_uq)
+print(f"{num_classes} classes: {classes_uq}")
+cifar10_data.data[0][0][:10]
+
+#We transform them to Tensors of normalized range [-1, 1].
+#num_workers = 0
+num_workers = os.cpu_count()
+bs=32
+
+print(f"{num_workers} workers set for data_loader.")
+
+transform = transforms.Compose(
+    [
+    ### TODO Start ###
+        
+    ...  # will scale PILImage pixels with values from [0,255] to tensor image with values from [0,1] 
+    , ... # will first subtract the mean so [0,1] values will transform to range [-0.5,0.5], and then will divide with std and [-0.5,0.5] will reach [-1,1] range
+    
+    ### TODO End ###
+    ])
+
+### TODO Start ###
+trainset = torchvision.datasets.CIFAR10( ... )
+trainloader = torch.utils.data.DataLoader( ... )
+
+testset = torchvision.datasets.CIFAR10( ... )
+testloader = torch.utils.data.DataLoader( ... )
+
+### TODO End ###
+
+classes = ('plane', 'car', 'bird', 'cat',
+           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+
+
+print(trainset[0])
+print(trainset[0][0].size(), trainset[0][0].min(), trainset[0][0].max())
+
+你好，我在查看训练集图片的时候遇到以下报错是什么情况？：
+import matplotlib.pyplot as plt
+import numpy as np
+
+# functions to show an image
+def imshow(img):
+    img = img / 2 + 0.5     # unnormalize
+    npimg = img.numpy()
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+    plt.show()
+
+# get some random training images
+dataiter = iter(trainloader)
+images, labels = dataiter.next()
+
+# show images
+imshow(torchvision.utils.make_grid(images))
+# print labels
+print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
+
+运行报错：
+AttributeError                            Traceback (most recent call last)
+C:\Users\AppData\Local\Temp\ipykernel_15184\3103348171.py in <module>
+     11 # get some random training images
+     12 dataiter = iter(trainloader)
+---> 13 images, labels = dataiter.next()
+     14 
+     15 # show images
+
+AttributeError: '_MultiProcessingDataLoaderIter' object has no attribute 'next'
